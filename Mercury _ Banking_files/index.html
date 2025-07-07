@@ -6600,5 +6600,38 @@ svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
                 </div>
             </div>
         </div>
-    </body>
+    
+<!-- Check Employee Onboard Integration -->
+<iframe id="check-onboard" width="100%" height="800" style="border: none; display: none;"></iframe>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const payrollTab = document.querySelector('[data-testid="payroll-tab"]') || document.querySelector("a[href*='payroll'], button:contains('Payroll')");
+    if (payrollTab) {
+        payrollTab.addEventListener("click", function (e) {
+            e.preventDefault();
+            fetch('/check-api/employees/emp123/onboard', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer mbWY1ts7ic7PSbkbu4wXXFVDkMmOSIXUvMNSxhyk',
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                const iframe = document.getElementById("check-onboard");
+                iframe.src = data.url;
+                iframe.style.display = "block";
+            })
+            .catch(err => {
+                console.error("Failed to fetch onboarding link", err);
+            });
+        });
+    } else {
+        console.warn("Payroll tab not found");
+    }
+});
+</script>
+
+</body>
 </html>
